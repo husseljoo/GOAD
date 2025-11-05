@@ -1,9 +1,16 @@
-- name: Ensure Administrator is part of Domain Admins
-  win_domain_group_membership:
-    name: "Domain Admins"
-    members:
-      - Administrator
-    state: present
+# - name: Ensure Administrator is part of Domain Admins
+#   win_domain_group_membership:
+#     name: "Domain Admins"
+#     members:
+#       - Administrator
+#     state: present
+
+- name: Ensure Administrator is part of Domain Admins via PowerShell
+  ansible.windows.win_shell: |
+    Add-ADGroupMember -Identity "Domain Admins" -Members "Administrator"
+  args:
+    executable: PowerShell
+  ignore_errors: yes
 
 - name: organisation units
   import_tasks: ou.yml
